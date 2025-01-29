@@ -1,0 +1,211 @@
+.grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+
+  
+}
+
+.content__grid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2%;
+  max-width: 880px;
+  padding-bottom: 5%;
+  width: 100%;
+}
+
+.content__grid-card {
+  position: relative;
+  height: 360px;
+  width: 292px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.content__grid-image {
+  width: 100%;
+  height: 80%;
+  border-radius: 10px 10px 0 0;
+}
+
+.content__grid-image-delete {
+  position: absolute;
+  right: 5%;
+  top: 5%;
+  background-image: url(../images/Trash.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 15px;
+  width: 15px;
+}
+
+.content__grid-image-delete:hover {
+  opacity: 70%;
+  cursor: pointer;
+}
+
+
+.content__grid-card-description {
+  display: flex; 
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  background-color: #fff;
+  padding: 0 5%;
+  font-size: 24px;
+  font-weight: bolder;
+  border-radius: 0 0 10px 10px;
+}
+
+.content__grid-card-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 70%;
+}
+
+.content__grid-card-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center; 
+}
+
+.content__grid-like {
+  bottom: 25px;
+}
+
+.content__grid-number {
+ margin-bottom: 3px;
+ margin-right: 12px; 
+}
+/*POSTER*/
+.content__grid-poster {
+  top: 13vh;
+  width: 40%;
+
+  height: 60%;
+  position: fixed;
+  visibility: hidden;
+  margin-left: 30%;
+
+  left: 0;
+
+}
+
+.content__grid-poster-overlay {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.content__grid-poster-enabled {
+  visibility: visible;
+}
+.content__grid-poster-top {
+  display: flex;
+  width: 100%;
+  height: 90%;
+  z-index: 1;
+}
+.content__grid-poster-close {
+  /* position: absolute;
+  top: 2%;
+  right: 2%; */
+  width: 8%;
+  height: 7%;
+  z-index: 1;
+}
+.content__grid-poster-image {
+  overflow: hidden;
+  margin-top: 5%;
+  /* 
+  margin-right: 10%; */
+  width: 90%;
+  height: 90%;
+}
+
+.content__grid-poster-name {
+  margin-top: 5px;
+  font-size: 30px;
+  font-weight: bold ;
+  z-index: 1;
+}
+
+.content__grid-poster-close:hover {
+  opacity: 70%;
+  cursor: pointer;
+}
+
+.content__grid-like {
+  border: none;
+  background: url(https://practicum-content.s3.us-west-1.amazonaws.com/web-code/dom/moved_heart.svg)
+    center no-repeat;
+  background-size: 100%;
+  cursor: pointer;
+  height: 15%;
+  width: 15%;
+  position: absolute;
+  right: 10px;
+  opacity: 0.5;
+  transition: 0.3s;
+}
+
+.content__grid-like:hover {
+  transform: scale(1.3);
+}
+
+.content__grid-like-active {
+  opacity: 1;
+  background: url(https://practicum-content.s3.us-west-1.amazonaws.com/web-code/dom/moved_heart-filled.svg)
+    center no-repeat;
+}
+
+@media screen and (max-width: 900px) {
+  .content__grid {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2%;
+    max-width: 880px;
+    padding-bottom: 5%;
+    width: 100%;
+  }
+
+}
+
+@media screen and (max-width: 500px) {
+  .content__grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  
+  .content__grid-poster {
+    top: 13%;
+    width: 80%;
+    height: 80%;
+    position: fixed;
+  }
+}
+
+
+@media screen and (max-width: 300px) {
+
+  .content__grid-card{
+    margin-left: 1%;
+    margin-right: 1%;
+  }
+  
+  .content__grid-poster-close {
+    width: 20px;
+    height: 20px;
+  }
+
+}

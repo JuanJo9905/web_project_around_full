@@ -1,0 +1,151 @@
+.header {
+  width: 180%;
+  margin-left: -40%;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+}
+
+.header__container {
+  width: 100%;
+  padding: 45px 0;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+}
+
+.header__auth-link {
+  text-decoration: none;
+  color: #FFFFFF;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  transition: opacity 0.3s ease;
+}
+
+.header__auth-link:hover {
+  opacity: 0.6;
+}
+
+.header__top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header__logo-section {
+  flex-shrink: 0;
+}
+.header__right-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.header__logo {
+  width: 173px;
+}
+
+.header__auth-title {
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: right;
+  color: #FFFFFF;
+}
+
+.header__user-info {
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: right;
+  color: #FFFFFF;
+}
+
+.header__email {
+  font-size: 18px;
+  line-height: 22px;
+  color: #FFFFFF;
+}
+
+.header__logout {
+  background: none;
+  border: none;
+  padding: 0 0 0 20px;
+  color: #A9A9A9;
+  font-size: 18px;
+  line-height: 22px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.header__logout:hover {
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 880px) {
+  .header__container {
+      padding: 45px 20px 35px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .header__container {
+      padding: 28px 0;
+  }
+
+  .header__top-row {
+      padding: 0 30px;
+  }
+
+  .header__right-section {
+      gap: 16px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .header__container {
+      padding: 28px 20px;
+  }
+  
+  .header__auth-title {
+      font-size: 20px;
+      line-height: 24px;
+  }
+  
+  .header__top-row {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+  }
+  
+  .header__user-info {
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .header__top-row {
+      flex-direction: column;
+      padding: 0 20px;
+      gap: 16px;
+  }
+
+  .header__right-section {
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+      text-align: center;
+  }
+
+  .header__user-info {
+      flex-direction: column;
+      gap: 8px;
+  }
+
+  .header__auth-title {
+      font-size: 16px;
+  }
+}

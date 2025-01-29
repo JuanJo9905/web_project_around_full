@@ -1,0 +1,27 @@
+body {
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 30px;
+  margin: 0;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+}
+
+.page {
+  background-color: #000;
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  width: 180%;
+  margin-left: -40%;
+  
+}
+
+@media screen and (max-width: 500px) {
+  .page{
+    width: 180%;
+    margin-left: -40%;
+
+  }
+
+}
