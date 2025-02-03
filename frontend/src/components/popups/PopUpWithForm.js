@@ -1,4 +1,4 @@
-import closeIcon from "../images/Close_Icon.png";
+import closeIcon from "../../images/Close_Icon.png";
 
 export default function PopUpWithForm(props) {
   return (

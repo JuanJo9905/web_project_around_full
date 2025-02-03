@@ -1,24 +1,29 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const {
+  UnauthorizedError,
+  NotFoundError,
+  BadRequestError,
+  ConflictError
+} = require('../errors');
 
 const JWT_SECRET = 'token_secreto';
 
-
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
-      return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
+      throw new UnauthorizedError('Correo o contraseña incorrectos');
     }
 
     const passwordValid = await bcrypt.compare(password, user.password);
 
     if (!passwordValid) {
-      return res.status(401).json({ message: 'Correo o contraseña incorrectos' });
+      throw new UnauthorizedError('Correo o contraseña incorrectos');
     }
 
     const token = jwt.sign(
@@ -29,11 +34,11 @@ const login = async (req, res) => {
 
     res.json({ token });
   } catch (err) {
-    res.status(500).json({ message: 'Error del servidor' });
+    next(err);
   }
 };
 
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
   try {
     const {
       email,
@@ -45,7 +50,7 @@ const createUser = async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(409).json({ message: 'El email ya está registrado' });
+      throw new ConflictError('El email ya está registrado');
     }
 
     const hash = await bcrypt.hash(password, 10);
@@ -58,37 +63,34 @@ const createUser = async (req, res) => {
       avatar,
     });
 
-    return res.status(201).json({
-      _id: user._id,
-      email: user.email,
-      name: user.name,
-      about: user.about,
-      avatar: user.avatar,
-    });
+    const userResponse = user.toObject();
+    delete userResponse.password;
+
+    res.status(201).json(userResponse);
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).json({ message: 'Datos de usuario inválidos' });
+      next(new BadRequestError('Datos de usuario inválidos'));
+    } else {
+      next(err);
     }
-    return res.status(500).json({ message: 'Error del servidor' });
   }
 };
 
-const getCurrentUser = async (req, res) => {
+const getCurrentUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
 
     if (!user) {
-      return res.status(404).json({ message: 'No se encontró el usuario' });
+      throw new NotFoundError('No se encontró el usuario');
     }
 
-    return res.json(user);
+    res.json(user);
   } catch (err) {
-    return res.status(500).json({ message: 'Error del servidor' });
+    next(err);
   }
 };
 
-
-const updateProfile = async (req, res) => {
+const updateProfile = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const { name, about } = req.body;
@@ -100,19 +102,20 @@ const updateProfile = async (req, res) => {
     );
 
     if (!user) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+      throw new NotFoundError('Usuario no encontrado');
     }
 
     res.json(user);
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).json({ message: 'Datos de perfil inválidos' });
+      next(new BadRequestError('Datos de perfil inválidos'));
+    } else {
+      next(err);
     }
-    return res.status(500).json({ message: 'Error en el servidor' });
   }
 };
 
-const updateAvatar = async (req, res) => {
+const updateAvatar = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const { avatar } = req.body;
@@ -124,17 +127,19 @@ const updateAvatar = async (req, res) => {
     );
 
     if (!user) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+      throw new NotFoundError('Usuario no encontrado');
     }
 
     res.json(user);
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).json({ message: 'URL de avatar inválida' });
+      next(new BadRequestError('URL de avatar inválida'));
+    } else {
+      next(err);
     }
-    return res.status(500).json({ message: 'Error en el servidor' });
   }
 };
+
 module.exports = {
   createUser,
   login,

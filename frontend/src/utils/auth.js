@@ -20,7 +20,7 @@ export const register = async ({ email, password }) => {
   return handleResponse(response);
 };
 
-export const authorize = async ({ email, password }) => {
+export const login = async ({ email, password }) => {
   const response = await fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
@@ -49,6 +49,6 @@ export const checkToken = async (token) => {
 
 export default {
   register,
-  authorize,
+  login,
   checkToken
 };

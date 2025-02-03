@@ -1,6 +1,6 @@
 import PopUpWithForm from './PopUpWithForm';
 import { useState, useContext, useEffect } from 'react';
-import { currentUserContext } from '../contexts/CurrentUserContext';
+import { currentUserContext } from '../../contexts/CurrentUserContext';
 // Ejemplo de como se desestructuran los parametros en lugar de obtener los parametros como props-> {isOpen, onClose}
 export default function EditProfilePopup({isOpen, onClose, onUpdateUser}) {
     const currentUser = useContext(currentUserContext);

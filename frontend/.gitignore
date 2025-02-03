@@ -1,5 +1,24 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Logs
+logs
+*.log
+request.log
+error.log
+
+# Environment variables
+.env
+
+# Editor files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
 # dependencies
 /node_modules
 /.pnp

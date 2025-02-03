@@ -1,6 +1,6 @@
 import React from 'react';
-import successIcon from '../images/succes-image.png';
-import errorIcon from '../images/error-image.png';
+import successIcon from '../../images/succes-image.png';
+import errorIcon from '../../images/error-image.png';
 
 function InfoTooltip({ isOpen, onClose, isSuccess }) {
   return (

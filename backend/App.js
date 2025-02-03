@@ -1,29 +1,46 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { errors } = require('celebrate');
+const { requestLogger, errorLogger } = require('./middleware/logger');
 const auth = require('./middleware/auth');
 const { login, createUser } = require('./controllers/users');
+const { validateUserCreation, validateAuthentication } = require('./middleware/validations');
 const userRoutes = require('./routes/users');
 const cardRoutes = require('./routes/cards');
 const errorHandler = require('./middleware/error-handler');
+const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const { PORT = 3000 } = process.env;
-
 const app = express();
 
-app.use(express.json());
+app.use(helmet());
 
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  credentials: true
+}));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+});
+app.use(limiter);
+
+app.use(express.json());
+app.use(requestLogger);
+
+app.post('/signin', validateAuthentication, login);
+app.post('/signup', validateUserCreation, createUser);
 
 app.use(auth);
 
 app.use('/users', userRoutes);
 app.use('/cards', cardRoutes);
 
-app.use('*', (req, res) => {
-  res.status(404).json({ message: 'Ruta no encontrada' });
-});
-
+app.use(errorLogger);
+app.use(errors());
 app.use(errorHandler);
 
 mongoose.connect('mongodb://localhost:27017/arounddb')

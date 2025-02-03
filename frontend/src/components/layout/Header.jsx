@@ -1,4 +1,4 @@
-import logo from "../images/Vector.svg";
+import logo from "../../images/Vector.svg";
 import { useLocation, Link } from 'react-router-dom';
 
 export default function Header({ isLoggedIn, email, onSignOut }) {
