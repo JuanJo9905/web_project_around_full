@@ -90,7 +90,7 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
-const updateProfile = async (req, res, next) => {
+const updateUser = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const { name, about } = req.body;
@@ -139,11 +139,32 @@ const updateAvatar = async (req, res, next) => {
     }
   }
 };
+const getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch (err) {
+    next(err);
+  }
+};
 
+const getUserById = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      throw new NotFoundError('Usuario no encontrado');
+    }
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+};
 module.exports = {
   createUser,
   login,
   getCurrentUser,
-  updateProfile,
-  updateAvatar
+  updateUser,
+  updateAvatar,
+  getUsers,
+  getUserById
 };

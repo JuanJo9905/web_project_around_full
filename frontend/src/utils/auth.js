@@ -1,5 +1,5 @@
 //const BASE_URL = 'https://se-register-api.en.tripleten-services.com/v1';
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://localhost:3001';
 
 async function handleResponse(res) {
   const data = await res.json();

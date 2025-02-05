@@ -22,7 +22,7 @@ module.exports = (req, res, next) => {
   next();
 };
 
-export const register = async (email, password) => {
+module.exports.register = async (email, password) => {
   const response = await fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
@@ -36,7 +36,7 @@ export const register = async (email, password) => {
   return await response.json();
 };
 
-export const login = async (email, password) => {
+module.exports.login = async (email, password) => {
   try {
     const response = await fetch(`${BASE_URL}/signin`, {
       method: 'POST',
@@ -59,7 +59,7 @@ export const login = async (email, password) => {
   }
 };
 
-export const checkToken = async (token) => {
+module.exports.checkToken = async (token) => {
   try {
     const response = await fetch(`${BASE_URL}/users/me`, {
       method: 'GET',

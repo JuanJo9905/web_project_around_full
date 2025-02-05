@@ -13,10 +13,13 @@ const {
   validateUserId
 } = require('../middleware/validations');
 
-router.get('/', getUsers);
-router.get('/:userId', getUserById);
+const auth = require('../middleware/auth');
+
+
+router.get('/me', auth, getCurrentUser);
 router.patch('/me', validateProfileUpdate, updateUser);
 router.patch('/me/avatar', validateAvatarUpdate, updateAvatar);
-router.get('/me', auth, getCurrentUser);
+router.get('/', getUsers);
+router.get('/:userId', validateUserId, getUserById);
 
 module.exports = router;
