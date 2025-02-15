@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const { requestLogger, errorLogger } = require('./middleware/logger');
+const { requestLogger, errorLogger, debugLogger } = require('./middleware/logger');
 const auth = require('./middleware/auth');
 const { login, createUser } = require('./controllers/users');
 const { validateUserCreation, validateAuthentication } = require('./middleware/validations');
@@ -11,27 +11,43 @@ const errorHandler = require('./middleware/error-handler');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const fs = require('fs');
+const path = require('path');
 
 const { PORT = 3001 } = process.env;
 const app = express();
 
+const logsDir = path.join(__dirname, 'logs');
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir);
+}
+
 app.use(helmet());
 
-app.use(cors({
-  origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+const corsOptions = {
+  origin: ["http://localhost:3000"],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+  optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100
+  max: 100,
+  message: { message: 'Demasiadas peticiones, por favor intente más tarde' }
 });
+
 app.use(limiter);
 
 app.use(express.json());
+
 app.use(requestLogger);
+if (process.env.NODE_ENV === 'development') {
+  app.use(debugLogger);
+}
 
 app.post('/signin', validateAuthentication, login);
 app.post('/signup', validateUserCreation, createUser);
@@ -45,13 +61,35 @@ app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
 
-mongoose.connect('mongodb://localhost:27017/arounddb')
+app.use('*', (req, res) => {
+  res.status(404).json({ message: 'Recurso no encontrado' });
+});
+
+mongoose.connect('mongodb://localhost:27017/arounddb', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(() => {
     console.log('Conexión exitosa a MongoDB');
   })
   .catch((err) => {
     console.error('Error al conectar a MongoDB:', err);
   });
+
+const gitignoreContent = `
+# Logs
+logs/
+*.log
+request.log
+error.log
+npm-debug.log*
+`;
+
+try {
+  fs.writeFileSync('.gitignore', gitignoreContent, { flag: 'a' });
+} catch (err) {
+  console.error('Error al actualizar .gitignore:', err);
+}
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);

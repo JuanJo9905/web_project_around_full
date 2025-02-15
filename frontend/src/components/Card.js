@@ -39,6 +39,10 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
         alt={card.name}
         className="content__grid-image"
         onClick={handleClick}
+        onError={(e) => {
+          e.target.onerror = null;
+          console.error('Error al cargar la imagen:', card.link);
+        }}
       />
       {isOwn && (
         <div

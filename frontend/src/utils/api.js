@@ -6,16 +6,19 @@ class Api {
 
   _getHeaders() {
     const token = localStorage.getItem('jwt');
+    if (!token) {
+      throw new Error('No hay token disponible');
+    }
+  
     return {
       ...this._headers,
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `Bearer ${token}`
     };
   }
 
   async _handleResponse(res) {
     const data = await res.json();
     if (res.ok) {
-      // Si la respuesta viene en formato { data: {...} }, devolvemos solo data
       return data.data || data;
     }
     return Promise.reject(data.message || 'Error en la petición');
@@ -41,7 +44,8 @@ class Api {
       headers: this._getHeaders(),
       body: JSON.stringify({ name, about })
     });
-    return this._handleResponse(response);
+    const data = await this._handleResponse(response);
+    return data;
   }
 
   async addCard({ name, link }) {
@@ -71,14 +75,20 @@ class Api {
   }
 
   async updateAvatar(avatar) {
-    const response = await fetch(`${this._baseUrl}/users/me/avatar`, {
-      method: 'PATCH',
-      headers: this._getHeaders(),
-      body: JSON.stringify({ avatar })
-    });
-    return this._handleResponse(response);
-  }
+    try {
+        const response = await fetch(`${this._baseUrl}/users/me/avatar`, {
+            method: 'PATCH',
+            headers: this._getHeaders(),
+            body: JSON.stringify({ avatar })
+        });
+        return this._handleResponse(response);
+    } catch (error) {
+        console.error('Error en updateAvatar:', error);
+        throw error;
+    }
 }
+}
+
 
 const api = new Api({
   baseUrl: 'http://localhost:3001',

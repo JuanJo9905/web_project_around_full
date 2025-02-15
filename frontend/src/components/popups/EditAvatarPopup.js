@@ -4,9 +4,17 @@ import PopUpWithForm from "./PopUpWithForm";
 function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
     const inputRef = createRef();
     function handleSubmit(e) {
-        e.preventDefault();
-        onUpdateAvatar(inputRef.current.value);
-    }
+      e.preventDefault();
+      const url = inputRef.current.value.trim();
+      try {
+          new URL(url);
+          onUpdateAvatar({
+              avatar: url
+          });
+      } catch (e) {
+          console.error('URL inválida:', e);
+      }
+  }
     return (
     <PopUpWithForm
       isOpen={isOpen}

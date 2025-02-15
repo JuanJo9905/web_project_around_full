@@ -7,7 +7,7 @@ const errorHandler = (err, req, res, next) => {
 
   if (err.name === 'ValidationError') {
     return res.status(400).json({
-      message: 'Datos inválidos enviados'
+      message: err.details?.[0]?.message || 'Datos inválidos enviados'
     });
   }
 
@@ -24,6 +24,6 @@ const errorHandler = (err, req, res, next) => {
       ? 'Se ha producido un error en el servidor'
       : message
   });
-}
+};
 
 module.exports = errorHandler;

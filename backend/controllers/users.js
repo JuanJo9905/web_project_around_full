@@ -43,9 +43,9 @@ const createUser = async (req, res, next) => {
     const {
       email,
       password,
-      name,
-      about,
-      avatar,
+      name = 'Jacques Cousteau',
+      about = 'Explorador',
+      avatar = 'https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg'
     } = req.body;
 
     const existingUser = await User.findOne({ email });

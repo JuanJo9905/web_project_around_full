@@ -19,16 +19,25 @@ const validateUserCreation = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().custom(validateURL)
+    name: Joi.string().min(2).max(30).default('Jacques Cousteau'),
+    about: Joi.string().min(2).max(30).default('Explorador'),
+    avatar: Joi.string().default('https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg')
   })
 });
 
 const validateAuthentication = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required()
+      email: Joi.string().required().email()
+          .messages({
+              'string.empty': 'El correo electrónico es requerido',
+              'string.email': 'Formato de correo electrónico inválido',
+              'any.required': 'El correo electrónico es requerido'
+          }),
+      password: Joi.string().required()
+          .messages({
+              'string.empty': 'La contraseña es requerida',
+              'any.required': 'La contraseña es requerida'
+          })
   })
 });
 

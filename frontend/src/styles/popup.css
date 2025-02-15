@@ -12,8 +12,9 @@
   color: #000;
 }
 
-.popup__enabled {
+.popup_enabled {
   visibility: visible;
+  opacity: 1;
 }
 
 .popup__overlay {
@@ -30,10 +31,9 @@
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
+  position: relative;
   max-width: 500px;
   width: 90%;
-  max-height: 80%;
-  overflow-y: auto;
   z-index: 2;
 }
 

@@ -36,26 +36,34 @@ module.exports.register = async (email, password) => {
   return await response.json();
 };
 
-module.exports.login = async (email, password) => {
+module.exports.login = async ({ email, password }) => {
   try {
-    const response = await fetch(`${BASE_URL}/signin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    });
+      console.log('Intentando login con:', { email, password }); // Debug
 
-    const data = await response.json();
+      const response = await fetch(`${BASE_URL}/signin`, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+      });
 
-    if (!response.ok) {
-      throw new Error(data.message || 'Email o contraseña incorrectos');
-    }
+      const data = await response.json();
 
-    return data;
+      if (!response.ok) {
+          throw new Error(data.message || 'Error en el inicio de sesión');
+      }
+
+      if (data.token) {
+          localStorage.setItem('jwt', data.token);
+          return data;
+      } else {
+          throw new Error('No se recibió token de autenticación');
+      }
   } catch (error) {
-    console.log('Error en auth.login:', error);
-    throw error;
+      console.error('Error completo:', error);
+      throw error;
   }
 };
 

@@ -6,15 +6,44 @@ function Register({ onRegister }) {
     email: '',
     password: ''
   });
-  
-  const handleSubmit = (e) => {
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onRegister(formData);
+    setError('');
+    setIsLoading(true);
+  
+    try {
+      console.log('Enviando datos:', formData); // Para debugging
+      
+      if (!formData.email || !formData.password) {
+        throw new Error('Email y contraseña son requeridos');
+      }
+  
+      if (formData.password.length < 8) {
+        throw new Error('La contraseña debe tener al menos 8 caracteres');
+      }
+  
+      await onRegister({
+        email: formData.email,
+        password: formData.password
+      });
+    } catch (err) {
+      setError(err.message || 'Error en el registro');
+      console.error('Error en registro:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    setError('');
   };
 
   return (
@@ -38,14 +67,23 @@ function Register({ onRegister }) {
           placeholder="Contraseña"
           className="auth__input"
           required
+          minLength="8"
         />
-        <button type="submit" className="auth__button">Registrarse</button>
+        {error && <span className="auth__error">{error}</span>}
+        <button 
+          type="submit" 
+          className="auth__button"
+          disabled={isLoading || !formData.email || formData.password.length < 8}
+        >
+          {isLoading ? "Registrando..." : "Registrarse"}
+        </button>
       </form>
       <div className="auth__signin">
-        <p className='auth__register-text'>¿Ya eres miembro? <Link to="/signin" className="auth__login-link">Inicia sesión aquí</Link></p>
+        <p className="auth__register-text">
+          ¿Ya eres miembro? <Link to="/signin" className="auth__login-link">Inicia sesión aquí</Link>
+        </p>
       </div>
     </div>
   );
 }
-
 export default Register;

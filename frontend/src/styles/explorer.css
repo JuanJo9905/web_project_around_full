@@ -66,6 +66,9 @@
   position: relative;
   border-radius: 50%;
   flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
 }
 
 .content__explorer-image::before {
@@ -76,8 +79,8 @@
   right: 0;
   bottom: 0;
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  background-size: cover !important;
+  background-position: center !important;
   opacity: 1;
   z-index: 1;
   transition: opacity 0.3s ease;

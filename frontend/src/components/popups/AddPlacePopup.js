@@ -1,22 +1,29 @@
-import React, {createRef} from "react";
+import React, { createRef } from "react";
 import PopUpWithForm from "./PopUpWithForm";
 
-function AddPlacePopup({isOpen, onClose, onAddPlace}) {
-    const titleRef = createRef();
-    const imageLinkRef = createRef();
-    function handleSubmit(evt){
-     evt.preventDefault();  
-     onAddPlace(
-        {
-        name:titleRef.current.value, 
-        link: imageLinkRef.current.value
-        })
+function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+  const titleRef = createRef();
+  const imageLinkRef = createRef();
+
+  function handleSubmit(evt) {
+    evt.preventDefault();    
+    const url = imageLinkRef.current.value;
+    try {
+      new URL(url);
+      onAddPlace({
+        name: titleRef.current.value,
+        link: url
+      });
+    } catch (e) {
+      console.error('URL inválida:', e);
     }
+  }
+
   return (
     <PopUpWithForm
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit = {handleSubmit}
+      onSubmit={handleSubmit}
       title="Nuevo Lugar"
       name="avatar"
       buttonText="Guardar"
