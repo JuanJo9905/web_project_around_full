@@ -14,7 +14,7 @@ const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3000 } = process.env;
 const app = express();
 
 const logsDir = path.join(__dirname, 'logs');
@@ -25,7 +25,15 @@ if (!fs.existsSync(logsDir)) {
 app.use(helmet());
 
 const corsOptions = {
-  origin: ["http://localhost:3000"],
+  origin: [    
+    "http://localhost:3000",
+    "http://arounddemo.chickenkiller.com",
+    "http://api.arounddemo.chickenkiller.com",
+    "http://www.arounddemo.chickenkiller.com",
+    "https://arounddemo.chickenkiller.com",
+    "https://api.arounddemo.chickenkiller.com",
+    "https://www.arounddemo.chickenkiller.com"
+    ],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -65,7 +73,7 @@ app.use('*', (req, res) => {
   res.status(404).json({ message: 'Recurso no encontrado' });
 });
 
-mongoose.connect('mongodb://localhost:27017/arounddb', {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
