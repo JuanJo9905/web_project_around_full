@@ -69,6 +69,4 @@ Cada imagen se manipulaba como un objeto JSON dentro de la página y contenia ca
 
 ## Conclusiones
 
-### Reflexión Personal
-
 Este proyecto me permitió experimentar el desarrollo full-stack completo, desde la conceptualización hasta la implementación. Aprendí que el desarrollo web moderno requiere un equilibrio entre funcionalidad, seguridad, performance y experiencia de usuario. La implementación de un CRUD completo con autenticación me dio confianza en mis habilidades para crear aplicaciones de nivel profesional.
